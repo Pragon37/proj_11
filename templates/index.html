@@ -10,7 +10,16 @@
     <form action="showSummary" method="post">
         <label for="email">Email:</label>
         <input type="email" name="email" id=""/>
-        <button type="submit">Enter</button>
+        <button type="submit" method="post">Enter</button>
     </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <h3>
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </h3>
+        {% endif %}
+    {% endwith %}
 </body>
 </html>

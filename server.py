@@ -1,4 +1,6 @@
 import json
+import pstats
+from types import NoneType
 from flask import Flask,render_template,request,redirect,flash,url_for
 
 
@@ -13,9 +15,18 @@ def loadCompetitions():
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
 
+def getClubOrNone():
+    club = [club for club in clubs if club['email'] == request.form['email']]
+    if club == []:
+        return None
+    return club[0]
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
+
+def create_app():
+    app = Flask(__name__)
+    return app
 
 competitions = loadCompetitions()
 clubs = loadClubs()
@@ -26,8 +37,10 @@ def index():
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',club=club,competitions=competitions)
+    if getClubOrNone() is None:
+        flash(f'There is no registered club for this email : {request.form["email"]}')
+        return redirect(url_for('index'))
+    return render_template('welcome.html',club=getClubOrNone(),competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
