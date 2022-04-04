@@ -1,6 +1,6 @@
 from tests.conftest import client
 from server import app
-from server import clubs 
+from server import clubs, MAX_PLACES
 import flask
 from flask import request
 
@@ -12,14 +12,14 @@ def test_purchase_places_negative_flash_message(client):
     )
     with app.test_request_context("/purchasePlaces", data={"club": "Simply Lift", "competition": "Spring Festival", "places": -1}):
         points = int(clubs[0]['points'])
-    assert f'Cant book -1 places. Book should be from 0 to {points}' in rv.data.decode()
+    assert f'Cant book -1 places. Book should be from 0 to {min(points, MAX_PLACES)}' in rv.data.decode()
 
 def test_purchase_places_overbooking_flash_message(client):
     response = client.post(
     "/purchasePlaces",
-    data={"club": "Simply Lift", "competition": "Spring Festival", "places": 14}, follow_redirects=True
+    data={"club": "Iron Temple", "competition": "Spring Festival", "places": 5}, follow_redirects=True
     )
-    assert f'Cant book 14 places. Book should be from 0 to 13' in response.data.decode()
+    assert f'Cant book 5 places. Book should be from 0 to 4' in response.data.decode()
 
 def test_purchase_places_negative_NOK(client):
     response = client.post(

@@ -3,6 +3,7 @@ import pstats
 from types import NoneType
 from flask import Flask,render_template,request,redirect,flash,url_for
 
+MAX_PLACES = 12
 
 def loadClubs():
     with open('clubs.json') as c:
@@ -25,7 +26,7 @@ def IsPlacesAvailable(placesLeft, placesRequired):
     return (placesLeft - placesRequired >= 0)
 
 def IsRequestNotPossible(pointsLeft, placesRequired):
-    return (pointsLeft - placesRequired < 0) or (placesRequired < 0)
+    return (pointsLeft - placesRequired < 0) or (placesRequired < 0) or placesRequired > MAX_PLACES
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
@@ -71,7 +72,7 @@ def purchasePlaces():
     print('PL LEFT : ', placesLeft)
     print('Required : ', placesRequired)
     if IsRequestNotPossible(pointsLeft, placesRequired):
-        flash(f'Cant book {placesRequired} places. Book should be from 0 to {pointsLeft}')
+        flash(f'Cant book {placesRequired} places. Book should be from 0 to {min(pointsLeft, MAX_PLACES)}')
     elif IsPlacesAvailable(placesLeft, placesRequired):
         competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
         flash('Great-booking complete!')
