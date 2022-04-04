@@ -21,6 +21,12 @@ def getClubOrNone():
         return None
     return club[0]
 
+def IsPlacesAvailable(placesLeft, placesRequired):
+    return (placesLeft - placesRequired >= 0)
+
+def IsRequestNotPossible(pointsLeft, placesRequired):
+    return (pointsLeft - placesRequired < 0) or (placesRequired < 0)
+
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
@@ -59,8 +65,18 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-    flash('Great-booking complete!')
+    placesLeft = int(competition['numberOfPlaces'])
+    pointsLeft = int(club['points'])
+    print('COMPET :', competition)
+    print('PL LEFT : ', placesLeft)
+    print('Required : ', placesRequired)
+    if IsRequestNotPossible(pointsLeft, placesRequired):
+        flash(f'Cant book {placesRequired} places. Book should be from 0 to {pointsLeft}')
+    elif IsPlacesAvailable(placesLeft, placesRequired):
+        competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
+        flash('Great-booking complete!')
+    else:
+        flash(f'Cant book {placesRequired} places. Available : {placesLeft}')
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
