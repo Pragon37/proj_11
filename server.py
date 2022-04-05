@@ -71,18 +71,16 @@ def book(competition,club):
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
-    placesRequired = int(request.form['places'])
+    placesRequired = int(request.form['places']) if request.form['places'] is not '' else 0
     placesLeft = int(competition['numberOfPlaces'])
     pointsLeft = int(club['points'])
-    print('COMPET :', competition)
-    print('PL LEFT : ', placesLeft)
-    print('Required : ', placesRequired)
     if IsDateOver(datetime.now().strftime(DATE_FORMAT), competition['date']):
         flash(f"Cant book places in past competition : {competition['date']}")
     elif IsRequestNotPossible(pointsLeft, placesRequired):
         flash(f'Cant book {placesRequired} places. Book should be from 0 to {min(pointsLeft, MAX_PLACES)}')
     elif IsPlacesAvailable(placesLeft, placesRequired):
         competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
+        club['points'] = int(club['points']) - placesRequired
         flash('Great-booking complete!')
     else:
         flash(f'Cant book {placesRequired} places. Available : {placesLeft}')
