@@ -1,9 +1,11 @@
 import json
+from datetime import datetime
 import pstats
 from types import NoneType
 from flask import Flask,render_template,request,redirect,flash,url_for
 
 MAX_PLACES = 12
+DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 def loadClubs():
     with open('clubs.json') as c:
@@ -27,6 +29,10 @@ def IsPlacesAvailable(placesLeft, placesRequired):
 
 def IsRequestNotPossible(pointsLeft, placesRequired):
     return (pointsLeft - placesRequired < 0) or (placesRequired < 0) or placesRequired > MAX_PLACES
+
+def IsDateOver(todayDate, competitionDate):
+    return (competitionDate < todayDate)
+
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
