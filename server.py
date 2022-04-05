@@ -77,7 +77,9 @@ def purchasePlaces():
     print('COMPET :', competition)
     print('PL LEFT : ', placesLeft)
     print('Required : ', placesRequired)
-    if IsRequestNotPossible(pointsLeft, placesRequired):
+    if IsDateOver(datetime.now().strftime(DATE_FORMAT), competition['date']):
+        flash(f"Cant book places in past competition : {competition['date']}")
+    elif IsRequestNotPossible(pointsLeft, placesRequired):
         flash(f'Cant book {placesRequired} places. Book should be from 0 to {min(pointsLeft, MAX_PLACES)}')
     elif IsPlacesAvailable(placesLeft, placesRequired):
         competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
