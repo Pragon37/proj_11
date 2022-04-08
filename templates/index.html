@@ -21,5 +21,9 @@
             </h3>
         {% endif %}
     {% endwith %}
+    <form action="/displayPoints" method="post">
+        <input type="hidden" name="email" value="{{email}}">
+        <button type="submit">Points</button>
+    </form>
 </body>
 </html>

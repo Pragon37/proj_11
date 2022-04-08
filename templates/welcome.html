@@ -15,7 +15,7 @@
         {% endfor %}
        </ul>
     {% endif%}
-    Points available: {{club['points']}}
+    <ul>Points available: {{club['points']}}</ul>
     <h3>Competitions:</h3>
     <ul>
         {% for comp in competitions%}
@@ -31,6 +31,10 @@
         {% endfor %}
     </ul>
     {%endwith%}
+    <form action="/displayPoints" method="post">
+        <input type="hidden" name="email" value="{{email}}">
+        <button type="submit">Points</button>
+    </form>
 
 </body>
 </html>

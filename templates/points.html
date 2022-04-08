@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Points | GUDLFT Registration</title>
+</head>
+<body>
+        <h2>Welcome, {{email}} </h2>
+        <a href="{{url_for('logout')}}">Logout</a>
+
+
+    <h3>Clubs:</h3>
+    <ul>
+        {% for club in clubs%}
+        <li>
+            {{club['name']}}<br />
+            Points: {{club['points']}}</br>
+        </li>
+        <hr />
+        {% endfor %}
+    </ul>
+
+    <form action="/showSummary" method="post">
+        <input type="hidden" name="email" value={{email}}>
+        <button type="submit">Booking</button>
+    </form>
+</body>
+</html>

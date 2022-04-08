@@ -41,7 +41,7 @@ def test_purchase_places_OK(client):
     "/purchasePlaces",
     data={"club": "Simply Lift", "competition": "Spring Festival", "places": 1}, follow_redirects=True
     )
-    assert 'Number of Places: 24' in response.data.decode()
+    assert 'Number of Places: 13' in response.data.decode()
 
 def test_purchase_places_OK_flash_message(client):
     response = client.post(
@@ -49,3 +49,14 @@ def test_purchase_places_OK_flash_message(client):
     data={"club": "Simply Lift", "competition": "Spring Festival", "places": 1}, follow_redirects=True
     )
     assert 'Great-booking complete!' in response.data.decode()
+
+def test_purchase_places_book_too_many_flash_message(client):
+    response = client.post(
+    "/purchasePlaces",
+    data={"club": "Simply Lift", "competition": "Fall Classic", "places": 4}, follow_redirects=True
+    )
+    response = client.post(
+    "/purchasePlaces",
+    data={"club": "She Lifts", "competition": "Fall Classic", "places": 10}, follow_redirects=True
+    )
+    assert f'Cant book 10 places. Available : 9' in response.data.decode()
