@@ -1,10 +1,3 @@
-from tests.conftest import client
-from server import app
-from server import clubs, clubs, getClubOrNone
-import flask
-from flask import request
-
-
 def test_display_points_status_code_is_NOK_400(client):
     response = client.post("/displayPoints")
     assert response.status_code == 400

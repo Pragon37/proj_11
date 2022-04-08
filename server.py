@@ -1,7 +1,6 @@
 import json
 from datetime import datetime
-import pstats
-from types import NoneType
+
 from flask import Flask, render_template, request, redirect, flash, url_for
 
 MAX_PLACES = 12
@@ -76,11 +75,11 @@ def showSummary():
 def book(competition, club):
     try:
         foundClub = [c for c in clubs if c["name"] == club][0]
-    except:
+    except IndexError:
         foundClub = False
     try:
         foundCompetition = [c for c in competitions if c["name"] == competition][0]
-    except:
+    except IndexError:
         foundCompetition = False
 
     if foundClub and foundCompetition:
@@ -99,9 +98,7 @@ def purchasePlaces():
     ]
     club = [c for c in clubs if c["name"] == request.form["club"]][0]
     email = club["email"]
-    placesRequired = (
-        int(request.form["places"]) if request.form["places"] != "" else 0
-    )
+    placesRequired = int(request.form["places"]) if request.form["places"] != "" else 0
     placesLeft = int(competition["numberOfPlaces"])
     pointsLeft = int(club["points"])
     if IsDateOver(datetime.now().strftime(DATE_FORMAT), competition["date"]):
