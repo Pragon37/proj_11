@@ -1,0 +1,21 @@
+=============================================== test session starts ================================================
+platform win32 -- Python 3.10.0, pytest-7.1.1, pluggy-1.0.0
+rootdir: F:\Pierre\OpenClassrooms\PROJ_11\Python_Testing
+plugins: cov-3.0.0, flask-1.2.0, mock-3.7.0
+collecting ...
+DevTools listening on ws://127.0.0.1:56214/devtools/browser/f845ffcb-0f0a-481f-ab9a-e4a63feb9868
+collected 41 items
+
+tests\integration\test_booking_in_past.py .                                                                   [  2%]
+tests\integration\test_booking_limits.py .......                                                              [ 19%]
+tests\integration\test_feature_display_points.py ..                                                           [ 24%]
+tests\integration\test_points_update.py .....                                                                 [ 36%]
+tests\integration\test_unknown_email.py .....                                                                 [ 48%]
+tests\integration\test_upper_limits.py .                                                                      [ 51%]
+tests\unit\test_booking_in_past.py .                                                                          [ 53%]
+tests\unit\test_booking_limits.py ........                                                                    [ 73%]
+tests\unit\test_feature_display_points.py ....                                                                [ 82%]
+tests\unit\test_unknown_email.py ......                                                                       [ 97%]
+tests\unit\test_upper_limit.py .                                                                              [100%]
+
+================================================ 41 passed in 5.79s ================================================
