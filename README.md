@@ -1,51 +1,128 @@
-# gudlift-registration
+# Proj_11 : Add tests to improve a Python web app
 
-1. Why
+[Project 11](https://github.com/Pragon37/proj_11)
+
+This project is a booking API, that is used by heavy lifting clubs to enrol in competition. 
+After they have registered, users may enrol club members provided that:
+- there are free slots available
+- the club has enough points to book the desired number of slots
+- the number of required slots is 12 maximum
+
+## Installing / Getting started
+
+It is implemented as a FLASK python API. To setup the environment you need to execute the following instructions:
+
+```shell
+cd proj_11
+git checkout QA
+python -m venv env
+env/Scripts/activate
+pip install -r requirements.txt
+$env:FLASK_APP = "server"
+$env:FLASK_DEBUG=1
+flask run
+
+To stop and quit the application: CTRL-BREAK.
+
+```
+Then you run the web application by loading :
+[Project 11] (http://127.0.0.1:5000/)
+It opens up the registration page.
+From this page :
+- you can login the system to book slots
+- you can navigate to display the registered clubs and their points
 
 
-    This is a proof of concept (POC) project to show a light-weight version of our competition booking platform. The aim is the keep things as light as possible, and use feedback from the users to iterate.
 
-2. Getting Started
+## Tests Implementation
+The fixes for errors, bugs, and new features and the related tests have been implemented in different branches.
 
-    This project uses the following technologies:
+To clone the project :
 
-    * Python v3.x+
+-git clone https://github.com/Pragon37/proj_11.git
 
-    * [Flask](https://flask.palletsprojects.com/en/1.1.x/)
-
-        Whereas Django does a lot of things for us out of the box, Flask allows us to add only what we need. 
-     
-
-    * [Virtual environment](https://virtualenv.pypa.io/en/stable/installation.html)
-
-        This ensures you'll be able to install the correct packages without interfering with Python on your machine.
-
-        Before you begin, please ensure you have this installed globally. 
+Checkout branch QA:
+git checkout QA
 
 
-3. Installation
+To checkout other branches :
 
-    - After cloning, change into the directory and type <code>virtualenv .</code>. This will then set up a a virtual python environment within that directory.
+1 - Fixes for : Unknown email crashes the system (code fixes + tests)
+[Issue 1 ](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/1)
 
-    - Next, type <code>source bin/activate</code>. You should see that your command prompt has changed to the name of the folder. This means that you can install packages in here without affecting affecting files outside. To deactivate, type <code>deactivate</code>
+git checkout error_unknown_email
 
-    - Rather than hunting around for the packages you need, you can install in one step. Type <code>pip install -r requirements.txt</code>. This will install all the packages listed in the respective file. If you install a package, make sure others know by updating the requirements.txt file. An easy way to do this is <code>pip freeze > requirements.txt</code>
+2 - Fixes for :  Not allowed to use more than their points (code fixes + tests)
+[Issue 2 ](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/2)
 
-    - Flask requires that you set an environmental variable to the python file. However you do that, you'll want to set the file to be <code>server.py</code>. Check [here](https://flask.palletsprojects.com/en/1.1.x/quickstart/#a-minimal-application) for more details
+git checkout bug_booking_limits
 
-    - You should now be ready to test the application. In the directory, type either <code>flask run</code> or <code>python -m flask run</code>. The app should respond with an address you should be able to go to using your browser.
+3- Fixes for : Not allowed to book more than 12 places per competition (code fixes + tests)
+[Issue 4 ](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/4)
 
-4. Current Setup
+git checkout bug_upper_limit
 
-    The app is powered by [JSON files](https://www.tutorialspoint.com/json/json_quick_guide.htm). This is to get around having a DB until we actually need one. The main ones are:
-     
-    * competitions.json - list of competitions
-    * clubs.json - list of clubs with relevant information. You can look here to see what email addresses the app will accept for login.
+4- Fixes for : Not allowed to book places in past competitions (code fixes + tests)
+[Issue 5 ](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/5)
 
-5. Testing
+git checkout bug_book_in_past
 
-    You are free to use whatever testing framework you like-the main thing is that you can show what tests you are using.
+5- Fixes for : Remove points that have been used (code fixes + tests)
+[Issue 6 ](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/6)
 
-    We also like to show how well we're testing, so there's a module called 
-    [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) you should add to your project.
+git checkout bug_points_update
 
+6- Fixes for : Implement Points Display Board (code fixes + tests)
+[Issue 7 ](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/7)
+
+git checkout feature_display_points
+
+
+
+## Links
+
+
+- Project homepage : [Project 11](https://github.com/Pragon37/proj_11)
+- Repository: https://github.com/Pragon37/proj_11.git
+
+#Testing and documentation 
+The API has been tested using Postman.
+The test collection can be imported from : SoftDeskAPI.postman_collection.json
+
+The documentation was recorded with Postman and is available at the following URL:
+[SoftDesk Doc](https://documenter.getpostman.com/view/17937229/UVkvLDXE)
+
+## Run tests (unit, integration, functional)
+
+git checkout QA
+pytest
+
+
+## Generate and display test coverage
+git checkout QA
+pytest --cov=. --cov-report html
+
+Then display in your browser :
+file:<Your Path>/htmlcov/server_py.html
+
+## generate and display test performance
+cd tests/performance
+locust
+
+in your browser load page : http://localhost:8089/
+Notice that  http://0.0.0.0:8089 does not work
+Start the test with :
+users: 6
+rate: 10
+site: http://127.0.0.1:5000/
+Make sure that flask is running at the above address.
+
+
+## Author
+
+Pierre : pragon37@outlook.fr
+
+## Credits
+[Selenium] (https://selenium-python.readthedocs.io/locating-elements.html)
+[Flask](https://flask.palletsprojects.com/en/2.0.x/tutorial/tests/)
+[testdriven.io](https://testdriven.io/blog/flask-pytest/)
