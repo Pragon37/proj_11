@@ -79,7 +79,7 @@ def test_purchase_places_update_points_OK(client):
     print("POINTS : ", points)
     rv = client.post(
         "/purchasePlaces",
-        data={"club": "Iron Temple", "competition": "Spring Festival", "places": 2},
+        data={"club": "Iron Temple", "competition": "Spring Festival", "places": 1},
         follow_redirects=True,
     )
-    assert f"Points available: {points - 2}" in rv.data.decode()
+    assert f"Points available: {points - 3}" in rv.data.decode()

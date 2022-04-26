@@ -20,6 +20,7 @@ def loadCompetitions():
 
 
 def getClubOrNone():
+    """ Return the requested club if it is in the gudlft database, otherwise returns None """
     club = [club for club in clubs if club["email"] == request.form["email"]]
     if club == []:
         return None
@@ -27,18 +28,25 @@ def getClubOrNone():
 
 
 def IsPlacesAvailable(placesLeft, placesRequired):
+    """Return true if the available places exceed the request"""
     return placesLeft - placesRequired >= 0
 
 
 def IsRequestNotPossible(pointsLeft, placesRequired):
+    """Return true for impossible requests.
+       Impossible requests are
+       -1 request that exceed the number of places available
+       -2 request for negative number of places
+       -3 requests over the maximum allowed."""
     return (
-        (pointsLeft - placesRequired < 0)
+        (pointsLeft - 3 * placesRequired < 0)
         or (placesRequired < 0)
         or placesRequired > MAX_PLACES
     )
 
 
 def IsDateOver(todayDate, competitionDate):
+    """Request for a competition in the past return true"""
     return competitionDate < todayDate
 
 
@@ -52,6 +60,7 @@ def create_app():
 
 
 competitions = loadCompetitions()
+print("COMPETITIONS + ",competitions)
 clubs = loadClubs()
 
 
@@ -105,13 +114,13 @@ def purchasePlaces():
         flash(f"Cant book places in past competition : {competition['date']}")
     elif IsRequestNotPossible(pointsLeft, placesRequired):
         flash(
-            f"Cant book {placesRequired} places. Book should be from 0 to {min(pointsLeft, MAX_PLACES)}"
+            f"Cant book {placesRequired} places. Possible bookings with {pointsLeft} : 0 to {min(int(pointsLeft / 3), MAX_PLACES)}"
         )
     elif IsPlacesAvailable(placesLeft, placesRequired):
         competition["numberOfPlaces"] = (
             int(competition["numberOfPlaces"]) - placesRequired
         )
-        club["points"] = int(club["points"]) - placesRequired
+        club["points"] = int(club["points"]) - 3 * placesRequired
         flash("Great-booking complete!")
     else:
         flash(f"Cant book {placesRequired} places. Available : {placesLeft}")

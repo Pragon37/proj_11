@@ -14,6 +14,6 @@ def test_purchase_places_above_max_places_flash_message(client):
     ):
         points = int(clubs[0]["points"])
     assert (
-        f"Cant book 13 places. Book should be from 0 to {min(points, MAX_PLACES)}"
+        f"Cant book 13 places. Possible bookings with {points} : 0 to {min(int(points / 3), MAX_PLACES)}"
         in rv.data.decode()
     )
